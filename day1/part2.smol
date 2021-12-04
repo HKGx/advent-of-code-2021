@@ -1,0 +1,35 @@
+import std.file
+
+f := file.open_file("./day1/input.txt")
+
+f_content := f.read()
+
+f_lines := f_content.split("\n")
+
+mut numbers : int[] = []
+
+for line in f_lines do
+    number := s2i(line)
+    numbers.push(number)
+end
+
+mut i := 0
+mut j := 1
+mut k := 2
+mut l := 3
+
+mut increments := 0
+
+while l < numbers.length do
+    s1 := numbers[i] + numbers[j] + numbers[k]
+    s2 := numbers[j] + numbers[k] + numbers[l]
+    if s1 < s2 do
+        increments := increments + 1
+    end
+    i := i + 1
+    j := j + 1
+    k := k + 1
+    l := l + 1
+end
+
+print(str(increments))
