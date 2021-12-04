@@ -1,0 +1,70 @@
+import std.file
+
+f := file.open_file("./day1/input.txt")
+
+f_content := f.read() # cannot chain this 
+
+f.close()
+
+f_lines := f_content.split("\n") # cannot chain this
+
+mut numbers : int[] = []
+
+for line in f_lines do
+    number := s2i(line)
+    numbers.push(number)
+end
+
+fn windows2(array: int[]) int[2][] do
+    mut result : int[2][] = []
+    for idx in 0..array.length - 1 do
+        result.push([array[idx], array[idx + 1]])
+    end
+    result
+end
+
+fn windows4(array: int[]) int[4][] do
+    mut result : int[4][] = []
+    for idx in 0..array.length - 3 do
+        result.push([array[idx], array[idx + 1], array[idx + 2], array[idx + 3]])
+    end
+    result
+end
+
+fn sum_arr(array: int[]) int do
+    mut sum := 0
+    for number in array do
+        sum := sum + number
+    end
+    sum
+end
+
+fn part1() int do
+    mut prev_sum : int = -1
+    mut inc := 0
+    for window in windows2(numbers) do
+        sum := sum_arr(window)
+        if sum > prev_sum do
+            inc := inc + 1
+        end
+        prev_sum := sum
+    end
+    inc
+end
+
+fn part2() int do
+    mut prev_sum : int = -1
+    mut inc := 0
+    for window in windows4(numbers) do
+        sum := sum_arr(window)
+        if sum > prev_sum do
+            inc := inc + 1
+        end
+        prev_sum := sum
+    end
+    inc
+end
+
+
+print("part 1: " + str(part1()))
+print("part 2: " + str(part2()))
