@@ -1,0 +1,81 @@
+import std.file
+
+f := file.open_file("./day3/input.txt")
+
+f_content := f.read() # cannot chain this 
+
+f.close()
+
+f_lines := f_content.split("\n") # cannot chain this
+
+mut column := 0
+mut row := 0
+
+first := f_lines[0]
+line_length := first.length
+
+
+examples_lines := [
+    "00100",
+    "11110",
+    "10110",
+    "10111",
+    "10101",
+    "01111",
+    "00111",
+    "11100",
+    "10000",
+    "11001",
+    "00010",
+    "01010",
+]
+
+
+mut row_occurences: int[] = []
+
+for i in 0..line_length: row_occurences.push(0)
+
+for line in f_lines do
+    for idx in 0..line_length do
+        char := line[idx]
+        if char == "1":
+            row_occurences.set(idx, row_occurences[idx] + 1)
+    end
+end
+
+mut gamma_bits := ""
+mut epsilon_bits := ""
+all_rows := f_lines.length
+for occurence in row_occurences do
+    if occurence > all_rows / 2 do
+        gamma_bits := gamma_bits + "1"
+        epsilon_bits := epsilon_bits + "0"
+    end
+    else do
+        gamma_bits := gamma_bits + "0"
+        epsilon_bits := epsilon_bits + "1"
+    end
+end
+
+print("gamma_bits: " + gamma_bits)
+print("epsilon_bits: " + epsilon_bits)
+
+fn binary_to_decimal(binary: string)  int do
+    mut decimal: int = 0
+    for i in 0..binary.length do
+        if binary[i] == "1" do
+            decimal := decimal + 2^(binary.length - i - 1)
+        end
+    end
+    decimal
+end
+
+gamma := binary_to_decimal(gamma_bits)
+epsilon := binary_to_decimal(epsilon_bits)
+consumption := gamma * epsilon
+
+print("gamma: " + str(gamma))
+print("epsilon: " + str(epsilon))
+print("consumption: " + str(consumption))
+
+        
