@@ -1,0 +1,39 @@
+import std.file
+
+f := file.open_file("./day2/input.txt")
+
+f_content := f.read() # cannot chain this 
+
+f.close()
+
+f_lines := f_content.split("\n") # cannot chain this
+
+mut x := 0
+mut y := 0
+
+test_input: string[] = [
+    "forward 5",
+    "down 5",
+    "forward 8",
+    "up 3",
+    "down 8",
+    "forward 2"
+]
+
+for line in f_lines do
+    if line[0] == "f" do
+        start := "forward ".length
+        x := x + s2i(line[start..line.length])
+    end
+    else if line[0] == "u" do
+        start := "up ".length
+        y := y - s2i(line[start..line.length])
+    end
+    else if line[0] == "d" do
+        start := "down ".length
+        y := y + s2i(line[start..line.length])
+    end
+end
+
+print(str(x) + "," + str(y))
+print("solution:" + str(x * y))
