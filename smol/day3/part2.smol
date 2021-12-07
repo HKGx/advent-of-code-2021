@@ -1,0 +1,112 @@
+import std.file
+import util
+
+
+
+f := file.open_file("./day3/input.txt")
+
+f_content := f.read() # cannot chain this 
+
+f.close()
+
+f_lines := f_content.split("\n") # cannot chain this
+
+mut column := 0
+mut row := 0
+
+
+examples_lines := [
+    "00100",
+    "11110",
+    "10110",
+    "10111",
+    "10101",
+    "01111",
+    "00111",
+    "11100",
+    "10000",
+    "11001",
+    "00010",
+    "01010",
+]
+
+lines := examples_lines
+
+first := lines[0]
+line_length := first.length
+all_rows := lines.length
+
+mut row_occurences: int[] = []
+
+for i in 0..line_length: row_occurences.push(0)
+
+for line in lines do
+    for idx in 0..line_length do
+        char := line[idx]
+        if char == "1":
+            row_occurences.set(idx, row_occurences[idx] + 1)
+    end
+end
+
+mut major_filtered: string[] = []
+
+for line in lines do
+    mut add_line := true
+    for idx in 0..line_length do
+        char := line[idx]
+        more_ones := row_occurences[idx] >= all_rows / 2
+        more_zeros := more_ones == false
+        if more_ones:
+            if char == "0" do
+                add_line := false
+                break
+            end
+        if more_zeros:
+            if char == "1" do
+                add_line := false
+                break
+            end
+    end
+    if add_line:
+        major_filtered.push(line)
+end
+
+mut minor_filtered: string[] = []
+
+for line in lines do
+    mut add_line := true
+    for idx in 0..line_length do
+        char := line[idx]
+        less_ones := row_occurences[idx] < all_rows / 2
+        less_zeros := row_occurences[idx] >= all_rows / 2
+        if less_ones:
+            if char == "0" do
+                add_line := false
+                break
+            end
+        if less_zeros:
+            if char == "1" do
+                add_line := false
+                break
+            end
+    end
+    if add_line:
+        minor_filtered.push(line)
+end
+
+for line in major_filtered: print(line)
+for line in minor_filtered: print(line)
+
+
+
+mut oxygen_rating_bits := ""
+mut co2_rating_bits := ""
+
+
+
+oxygen_rating := util.bin2dec(oxygen_rating_bits) + 1
+co2_rating := util.bin2dec(co2_rating_bits) + 1
+life_support_rating := oxygen_rating * co2_rating
+print("Oxygen rating: " + str(oxygen_rating))
+print("CO2 rating: " + str(co2_rating))
+print("Life support rating: " + str(life_support_rating))

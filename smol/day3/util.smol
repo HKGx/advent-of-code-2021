@@ -1,0 +1,9 @@
+fn bin2dec(binary: string)  int do
+    mut decimal: int = 0
+    for i in 0..binary.length do
+        if binary[i] == "1" do
+            decimal := decimal + 2^(binary.length - i - 1)
+        end
+    end
+    decimal
+end
